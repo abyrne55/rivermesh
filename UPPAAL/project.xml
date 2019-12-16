@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+clock T;
+chan after5s;
+chan data_Node2;
+chan data_Node3;
+chan data_M;
+chan dataReceive;
+chan ack2;
+chan ack3;
+chan ackM;</declaration>
+	<template>
+		<name x="5" y="5">Master</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="25" y="0">
+			<name x="0" y="17">Success</name>
+		</location>
+		<location id="id1" x="25" y="-93">
+			<name x="15" y="-127">Receive</name>
+		</location>
+		<location id="id2" x="-246" y="-93">
+			<name x="-256" y="-127">Idle</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-144" y="-119">data_M?</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="34" y="-51">ackM!</label>
+		</transition>
+	</template>
+	<template>
+		<name>Node1</name>
+		<location id="id3" x="-850" y="-433">
+			<name x="-901" y="-416">WaitForNode3</name>
+		</location>
+		<location id="id4" x="-654" y="-433">
+			<name x="-697" y="-416">Node2Failed</name>
+		</location>
+		<location id="id5" x="-484" y="-595">
+			<name x="-510" y="-629">Sending</name>
+		</location>
+		<location id="id6" x="-484" y="-434">
+			<name x="-527" y="-416">WaitForNode2</name>
+		</location>
+		<location id="id7" x="-646" y="-595">
+			<name x="-656" y="-629">Idle</name>
+		</location>
+		<init ref="id7"/>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-569" y="-535">ack2?</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-773" y="-544">ack3?</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-790" y="-459">data_Node3!</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-603" y="-459">after5s?</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-476" y="-527">data_Node2!</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-612" y="-620">dataReceive?</label>
+		</transition>
+	</template>
+	<template>
+		<name>Node3</name>
+		<location id="id8" x="212" y="-136">
+			<name x="202" y="-170">Acknowledge</name>
+		</location>
+		<location id="id9" x="-153" y="17">
+			<name x="-178" y="34">Failure</name>
+		</location>
+		<location id="id10" x="-8" y="17">
+			<name x="-25" y="34">Wait1</name>
+		</location>
+		<location id="id11" x="212" y="17">
+			<name x="169" y="34">WaitForMaster</name>
+		</location>
+		<location id="id12" x="68" y="-136">
+			<name x="51" y="-170">Send</name>
+		</location>
+		<location id="id13" x="-153" y="-136">
+			<name x="-163" y="-170">Idle</name>
+		</location>
+		<init ref="id13"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="221" y="-76">data_M!</label>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="110" y="-153">ack3!</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-102" y="0">after5s?</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="59" y="0">after5s?</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="34" y="-76">ackM?</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="-85" y="-153">data_Node3?</label>
+		</transition>
+	</template>
+	<template>
+		<name>Node2</name>
+		<location id="id14" x="110" y="-272">
+			<name x="85" y="-306">Failure</name>
+		</location>
+		<location id="id15" x="-391" y="-272">
+			<name x="-416" y="-306">Success</name>
+		</location>
+		<location id="id16" x="-391" y="-161">
+			<name x="-501" y="-170">WaitForNode3</name>
+		</location>
+		<location id="id17" x="-391" y="0">
+			<name x="-450" y="17">MasterNotReached</name>
+		</location>
+		<location id="id18" x="-59" y="0">
+			<name x="-93" y="17">Acknowledge</name>
+		</location>
+		<location id="id19" x="-238" y="0">
+			<name x="-297" y="17">WaitForMaster</name>
+		</location>
+		<location id="id20" x="-59" y="-272">
+			<name x="-85" y="-306">Sending</name>
+		</location>
+		<location id="id21" x="-238" y="-272">
+			<name x="-255" y="-306">idle</name>
+		</location>
+		<init ref="id21"/>
+		<transition>
+			<source ref="id20"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="0" y="-272">after5s?</label>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="-442" y="-229">ack3?</label>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id16"/>
+			<label kind="synchronisation" x="-476" y="-76">data_Node3!</label>
+		</transition>
+		<transition>
+			<source ref="id19"/>
+			<target ref="id17"/>
+			<label kind="synchronisation" x="-348" y="-17">after5s?</label>
+		</transition>
+		<transition>
+			<source ref="id19"/>
+			<target ref="id21"/>
+			<label kind="synchronisation" x="-229" y="-153">ackM?</label>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="-161" y="-17">data_M!</label>
+		</transition>
+		<transition>
+			<source ref="id20"/>
+			<target ref="id18"/>
+			<label kind="synchronisation" x="-51" y="-213">ack2!</label>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id20"/>
+			<label kind="synchronisation" x="-195" y="-297">data_Node2?</label>
+		</transition>
+	</template>
+	<template>
+		<name>DataReceive</name>
+		<location id="id22" x="153" y="0">
+		</location>
+		<location id="id23" x="0" y="0">
+		</location>
+		<init ref="id23"/>
+		<transition>
+			<source ref="id23"/>
+			<target ref="id22"/>
+			<label kind="synchronisation" x="34" y="-17">dataReceive!</label>
+		</transition>
+	</template>
+	<template>
+		<name>after5sTemplate</name>
+		<location id="id24" x="0" y="0">
+			<label kind="invariant" x="-34" y="17">T &lt;= 5</label>
+		</location>
+		<init ref="id24"/>
+		<transition>
+			<source ref="id24"/>
+			<target ref="id24"/>
+			<label kind="guard" x="85" y="-17">T == 5</label>
+			<label kind="synchronisation" x="85" y="0">after5s!</label>
+			<label kind="assignment" x="85" y="-34">T = 0</label>
+			<nail x="68" y="-34"/>
+			<nail x="68" y="34"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Master_Node = Master();
+Timer5s = after5sTemplate();
+Data_Receive_Signal = DataReceive();
+node1 = Node1();
+node2 = Node2();
+node3 = Node3();
+// List one or more processes to be composed into a system.
+system Master_Node, Timer5s, Data_Receive_Signal, node1, node2, node3;
+    </system>
+	<queries>
+		<query>
+			<formula>E&lt;&gt; node2.Failure and Master_Node.Success
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>
